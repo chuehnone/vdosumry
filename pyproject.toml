@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "vdosumry"
+version = "0.1.0"
+description = ""
+authors = ["ChinSheng <1897025+chuehnone@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+yt-dlp = "^2024.8.6"
+ollama = "^0.3.3"
+click = "^8.1.7"
+llvmlite = "^0.43.0"
+numba = "^0.60.0"
+openai-whisper = {git = "https://github.com/openai/whisper.git"}
+
+[tool.poetry.scripts]
+vdosumry = "vdosumry.main:summarize_video"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
