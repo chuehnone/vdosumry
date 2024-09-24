@@ -19,7 +19,7 @@ def download_video(url: str, output_path: str = "./downloads") -> str:
     return video_path
 
 
-def transcribe_audio(video_path: str, model_size: str = "base")-> str:
+def transcribe_audio(video_path: str, model_size: str = "base") -> str:
     model = whisper.load_model(model_size)
     response = model.transcribe(video_path)
     result = "\n".join(f"{i['start']:.2f} - {i['end']:.2f}: {i['text']}" for i in response['segments'])
@@ -37,9 +37,14 @@ def summarize_text(text: str, model: str = "llama3.1") -> str:
     response = requests.post('http://localhost:11434/api/generate', headers=headers, json=data)
     if response.status_code == 200:
         data = "".join(json.loads(line)['response'] for line in response.text.splitlines() if line.strip())
-        return  data
+        return data
     else:
         raise Exception(f"摘要生成失敗：{response.status_code} - {response.text}")
+
+
+def save_to_file(content: str, file_path: str):
+    with open(file_path, 'w', encoding='utf-8') as f:
+        f.write(content)
 
 
 @click.command()
@@ -63,8 +68,7 @@ def summarize_video(url, output, model_size):
     try:
         transcript = transcribe_audio(video_path, model_size=model_size)
         transcript_path = os.path.join(output, 'transcript.txt')
-        with open(transcript_path, 'w', encoding='utf-8') as f:
-            f.write(transcript)
+        save_to_file(transcript, transcript_path)
         click.echo(f"轉錄文字已儲存至 {transcript_path}")
     except Exception as e:
         click.echo(f"轉錄失敗：{e}")
@@ -74,8 +78,7 @@ def summarize_video(url, output, model_size):
     try:
         summary = summarize_text(transcript)
         summary_path = os.path.join(output, 'summary.txt')
-        with open(summary_path, 'w', encoding='utf-8') as f:
-            f.write(summary)
+        save_to_file(summary, summary_path)
         click.echo(f"摘要已儲存至 {summary_path}")
     except Exception as e:
         click.echo(f"生成摘要失敗：{e}")
