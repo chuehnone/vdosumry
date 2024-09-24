@@ -32,5 +32,13 @@ poetry run vdosumry "https://www.youtube.com/watch?v={youtube_youtube_id}"
 ## Contribution
 Issues and pull requests are welcome. Please ensure your code adheres to the project's coding standards.
 
+### Linter
+
+Use Ruff to lint your code before opening a pull request.
+
+```bash
+poetry run ruff format
+``` 
+
 ## License
 This project is licensed under the MIT License.

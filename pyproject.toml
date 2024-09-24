@@ -17,6 +17,12 @@ openai-whisper = {git = "https://github.com/openai/whisper.git"}
 [tool.poetry.scripts]
 vdosumry = "vdosumry.main:summarize_video"
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.7"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
