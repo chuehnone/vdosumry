@@ -19,14 +19,14 @@ def download_video(url: str, output_path: str = "./downloads") -> str:
     return video_path
 
 
-def transcribe_audio(video_path: str, model_size: str = "base") -> str:
+def transcribe_audio(video_path: str, model_size: str = 'base') -> str:
     model = whisper.load_model(model_size)
     response = model.transcribe(video_path)
     result = "\n".join(f"{i['start']:.2f} - {i['end']:.2f}: {i['text']}" for i in response['segments'])
     return result
 
 
-def summarize_text(text: str, model: str = "llama3.1") -> str:
+def summarize_text(text: str, model: str = 'llama3.1') -> str:
     headers = {
         'Content-Type': 'application/json',
     }
@@ -51,7 +51,8 @@ def save_to_file(content: str, file_path: str):
 @click.argument('url')
 @click.option('--output', default='./output', help='摘要輸出目錄')
 @click.option('--model-size', default='base', help='Whisper 模型大小')
-def summarize_video(url, output, model_size):
+@click.option('--ollama-model', default='llama3.1', help='Ollama 模型')
+def summarize_video(url, output, model_size, ollama_model):
     """下載影片，轉錄音訊，並生成摘要。"""
     # 創建輸出目錄
     Path(output).mkdir(parents=True, exist_ok=True)
@@ -76,7 +77,7 @@ def summarize_video(url, output, model_size):
 
     click.echo("生成摘要中...")
     try:
-        summary = summarize_text(transcript)
+        summary = summarize_text(transcript, model=ollama_model)
         summary_path = os.path.join(output, 'summary.txt')
         save_to_file(summary, summary_path)
         click.echo(f"摘要已儲存至 {summary_path}")
