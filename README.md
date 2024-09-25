@@ -29,6 +29,16 @@ or
 poetry run vdosumry "https://www.youtube.com/watch?v={youtube_youtube_id}"
 ```
 
+### Command Options
+
+- **--output** : Directory to save the summary (default: `./output`)
+- **--model-size** : Size of the Whisper model (default: `base`)
+- **--ollama-model** : Ollama model to use for summarization (default: `llama3.1`)
+
+```bash
+poetry run vdosumry "https://www.youtube.com/watch?v={youtube_youtube_id}" --output="./output" --model-size="base" --ollama-model="llama3.1"
+```
+
 ## Contribution
 Issues and pull requests are welcome. Please ensure your code adheres to the project's coding standards.
 
