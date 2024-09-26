@@ -2,7 +2,7 @@ import json
 import requests
 
 class TextSummarizer:
-    def __init__(self, model="llama3.1"):
+    def __init__(self, model):
         self.model = model
 
     def summarize(self, text: str) -> str:

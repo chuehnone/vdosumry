@@ -11,7 +11,7 @@ from vdosumry.file_manager import FileManager
 @click.argument("url")
 @click.option("--output", default="./output", help="摘要輸出目錄")
 @click.option("--model-size", default="base", help="Whisper 模型大小")
-@click.option("--ollama-model", default="llama3.1", help="Ollama 模型")
+@click.option("--ollama-model", default="llama3.2", help="Ollama 模型")
 def summarize_video(url, output, model_size, ollama_model):
     """下載影片，轉錄音訊，並生成摘要。"""
     # 創建輸出目錄

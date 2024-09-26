@@ -6,7 +6,7 @@
 
 ## Prerequisites
 
-- ollama
+- [ollama](https://ollama.com/): Please install ollama before installing Vdosumry
 
 ## Installation
 Ensure your Python version is 3.12 or above, then install the dependencies using the following command:
@@ -33,10 +33,10 @@ poetry run vdosumry "https://www.youtube.com/watch?v={youtube_youtube_id}"
 
 - **--output** : Directory to save the summary (default: `./output`)
 - **--model-size** : Size of the Whisper model (default: `base`)
-- **--ollama-model** : Ollama model to use for summarization (default: `llama3.1`)
+- **--ollama-model** : Ollama model to use for summarization (default: `llama3.2`)
 
 ```bash
-poetry run vdosumry "https://www.youtube.com/watch?v={youtube_youtube_id}" --output="./output" --model-size="base" --ollama-model="llama3.1"
+poetry run vdosumry "https://www.youtube.com/watch?v={youtube_youtube_id}" --output="./output" --model-size="base" --ollama-model="llama3.2"
 ```
 
 ## Contribution
