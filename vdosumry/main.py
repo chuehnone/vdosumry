@@ -1,7 +1,7 @@
 import os
 import click
 from pathlib import Path
-from vdosumry import VideoDownloader, AudioTranscriber, TextSummarizer, FileManager
+from vdosumry import VideoDownloader, AudioTranscriber, TextSummarizer, FileManager, TextTranslator
 
 
 @click.command()
@@ -9,7 +9,8 @@ from vdosumry import VideoDownloader, AudioTranscriber, TextSummarizer, FileMana
 @click.option("--output", default="./output", help="摘要輸出目錄")
 @click.option("--model-size", default="base", help="Whisper 模型大小")
 @click.option("--ollama-model", default="llama3.2", help="Ollama 模型")
-def summarize_video(url, output, model_size, ollama_model):
+@click.option("--language", default="zh-TW", help="指定輸出的摘要語言")
+def summarize_video(url, output, model_size, ollama_model, language):
     """下載影片，轉錄音訊，並生成摘要。"""
     # 創建輸出目錄
     Path(output).mkdir(parents=True, exist_ok=True)
@@ -45,6 +46,17 @@ def summarize_video(url, output, model_size, ollama_model):
         click.echo(f"摘要已儲存至 {summary_path}")
     except Exception as e:
         click.echo(f"生成摘要失敗：{e}")
+        return
+
+    click.echo("摘要翻譯中...")
+    try:
+        translator = TextTranslator(target_language=language, model=ollama_model)
+        translate_summary = translator.translate(summary)
+        translate_path = os.path.join(output, "translate.srt")
+        file_manager.save(translate_summary, translate_path)
+        click.echo(f"摘要翻譯已儲存至 {translate_path}")
+    except Exception as e:
+        click.echo(f"摘要翻譯失敗：{e}")
         return
 
     click.echo("完成！")
