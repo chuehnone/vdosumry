@@ -1,10 +1,7 @@
 import os
 import click
 from pathlib import Path
-from vdosumry.video_downloader import VideoDownloader
-from vdosumry.audio_transcriber import AudioTranscriber
-from vdosumry.text_summarizer import TextSummarizer
-from vdosumry.file_manager import FileManager
+from vdosumry import VideoDownloader, AudioTranscriber, TextSummarizer, FileManager
 
 
 @click.command()
