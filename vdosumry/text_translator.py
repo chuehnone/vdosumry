@@ -1,6 +1,7 @@
 import json
 import requests
 
+
 class TextTranslator:
     def __init__(self, target_language, model):
         self.target_language = target_language

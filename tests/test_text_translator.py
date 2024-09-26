@@ -2,8 +2,9 @@ import unittest
 from unittest.mock import patch
 from vdosumry.text_translator import TextTranslator
 
+
 class TestTextTranslator(unittest.TestCase):
-    @patch('requests.post')
+    @patch("requests.post")
     def test_translate(self, mock_post):
         # Arrange
         mock_response = unittest.mock.Mock()
@@ -20,5 +21,6 @@ class TestTextTranslator(unittest.TestCase):
         # Assert
         self.assertEqual(translated_text, "這是一個測試翻譯")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

@@ -1,6 +1,7 @@
 import json
 import requests
 
+
 class TextSummarizer:
     def __init__(self, model):
         self.model = model

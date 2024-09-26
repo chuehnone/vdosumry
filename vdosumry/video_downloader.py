@@ -1,5 +1,6 @@
 import yt_dlp
 
+
 class VideoDownloader:
     def __init__(self, output_path="./downloads"):
         self.output_path = output_path

@@ -1,5 +1,6 @@
 import whisper
 
+
 class AudioTranscriber:
     def __init__(self, model_size="base"):
         self.model_size = model_size
