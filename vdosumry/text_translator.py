@@ -13,7 +13,7 @@ class TextTranslator:
         }
         data = {
             "model": self.model,
-            "prompt": f"請將以下內容翻譯成 {self.target_language} 的語言： ```\n\n{text}```",
+            "prompt": f"請將以下內容翻譯成 {self.target_language} 的語言： \n\n{text}",
         }
         response = requests.post(
             "http://localhost:11434/api/generate", headers=headers, json=data

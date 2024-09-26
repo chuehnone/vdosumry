@@ -58,7 +58,7 @@ def summarize_video(url, output, model_size, ollama_model, language):
     try:
         translator = TextTranslator(target_language=language, model=ollama_model)
         translate_summary = translator.translate(summary)
-        translate_path = os.path.join(output, "translate.srt")
+        translate_path = os.path.join(output, "translate.txt")
         file_manager.save(translate_summary, translate_path)
         click.echo(f"摘要翻譯已儲存至 {translate_path}")
     except Exception as e:
