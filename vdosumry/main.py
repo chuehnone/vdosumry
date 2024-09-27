@@ -8,6 +8,7 @@ from vdosumry import (
     FileManager,
     TextTranslator,
 )
+from .llm.ollama import Ollama
 
 
 @click.command()
@@ -23,7 +24,7 @@ def summarize_video(url, output, model_size, ollama_model, language):
 
     downloader = VideoDownloader(output_path=output)
     transcriber = AudioTranscriber(model_size=model_size)
-    summarizer = TextSummarizer(model=ollama_model)
+    ollama = Ollama(model=ollama_model)
     file_manager = FileManager()
 
     click.echo("下載影片中...")
@@ -46,6 +47,7 @@ def summarize_video(url, output, model_size, ollama_model, language):
 
     click.echo("生成摘要中...")
     try:
+        summarizer = TextSummarizer(llm=ollama)
         summary = summarizer.summarize(transcript)
         summary_path = os.path.join(output, "summary.txt")
         file_manager.save(summary, summary_path)
@@ -56,7 +58,7 @@ def summarize_video(url, output, model_size, ollama_model, language):
 
     click.echo("摘要翻譯中...")
     try:
-        translator = TextTranslator(target_language=language, model=ollama_model)
+        translator = TextTranslator(target_language=language, llm=ollama)
         translate_summary = translator.translate(summary)
         translate_path = os.path.join(output, "translate.txt")
         file_manager.save(translate_summary, translate_path)
