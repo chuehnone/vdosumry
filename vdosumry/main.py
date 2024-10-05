@@ -48,9 +48,9 @@ def summarize_video(url, output, model_size, ollama_model, language):
 
     click.echo(_("Transcribing audio to text..."))
     try:
-        transcript = transcriber.transcribe(video_path)
+        transcriber.transcribe(video_path)
         transcript_path = os.path.join(output, "transcript.srt")
-        FileManager.save(transcript, transcript_path)
+        FileManager.save(transcriber.get_srt_format(), transcript_path)
         click.echo(_("Transcript saved to {}").format(transcript_path))
     except Exception as e:
         click.echo(_("Failed to transcribe: {}").format(e))
@@ -59,7 +59,7 @@ def summarize_video(url, output, model_size, ollama_model, language):
     click.echo(_("Generating summary..."))
     try:
         summarizer = TextSummarizer(llm=ollama)
-        summary = summarizer.summarize(transcript)
+        summary = summarizer.summarize(transcriber.get_text_format())
         summary_path = os.path.join(output, "summary.txt")
         FileManager.save(summary, summary_path)
         click.echo(_("Summary saved to {}").format(summary_path))
