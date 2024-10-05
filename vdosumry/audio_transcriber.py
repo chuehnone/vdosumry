@@ -8,14 +8,13 @@ class AudioTranscriber:
 
     def transcribe(self, video_path: str):
         model = whisper.load_model(self.model_size)
-        response = model.transcribe(video_path)
-        self.segments = response["segments"]
+        self.segments = model.transcribe(video_path)["segments"]
 
     def get_srt_format(self) -> str:
         return "\n".join(
-            f"{i["id"] + 1}\n"
-            f"{self._format_time(i["start"])} --> {self._format_time(i["end"])}\n"
-            f"{i["text"].strip()}\n"
+            f"{i['id'] + 1}\n"
+            f"{self._format_time(i['start'])} --> {self._format_time(i['end'])}\n"
+            f"{i['text'].strip()}\n"
             for i in self.segments
         )
 
@@ -24,8 +23,7 @@ class AudioTranscriber:
 
     @staticmethod
     def _format_time(seconds: float) -> str:
-        hours = int(seconds // 3600)
-        minutes = int((seconds % 3600) // 60)
-        secs = int(seconds % 60)
+        hours, remainder = divmod(seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
         millis = int((seconds % 1) * 1000)
-        return f"{hours:02}:{minutes:02}:{secs:02},{millis:03}"
+        return f"{int(hours):02}:{int(minutes):02}:{int(seconds):02},{millis:03}"
