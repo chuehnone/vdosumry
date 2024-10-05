@@ -1,5 +1,5 @@
 import os
-
+import gettext
 import click
 from vdosumry import (
     VideoDownloader,
@@ -10,60 +10,72 @@ from vdosumry import (
 )
 from .llm.ollama import Ollama
 
+# Set up gettext
+localedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "locales")
+lang = os.environ.get("LANG", "en").split(".")[0]
+translation = gettext.translation(
+    "vdosumry", localedir, languages=[lang], fallback=True
+)
+translation.install()
+_ = translation.gettext
+
 
 @click.command()
 @click.argument("url")
-@click.option("--output", default="./output", help="摘要輸出目錄")
-@click.option("--model-size", default="base", help="Whisper 模型大小")
-@click.option("--ollama-model", default="llama3.2", help="Ollama 模型")
-@click.option("--language", default="zh-TW", help="指定輸出的摘要語言")
+@click.option("--output", default="./output", help=_("Directory to save the summary"))
+@click.option("--model-size", default="base", help=_("Size of the Whisper model"))
+@click.option(
+    "--ollama-model",
+    default="llama3.2",
+    help=_("Ollama model to use for summarization"),
+)
+@click.option("--language", default="zh-TW", help=_("Summarization language"))
 def summarize_video(url, output, model_size, ollama_model, language):
-    """下載影片，轉錄音訊，並生成摘要。"""
-    # Create output directory if not exists or clear the directory if exists
+    """Download video, transcribe audio, and generate summary."""
     FileManager.create_directory(output)
 
     downloader = VideoDownloader(output_path=output)
     transcriber = AudioTranscriber(model_size=model_size)
     ollama = Ollama(model=ollama_model)
 
-    click.echo("下載影片中...")
+    click.echo(_("Downloading video..."))
     try:
         video_path = downloader.download(url)
-        click.echo(f"影片已下載至 {video_path}")
+        click.echo(_("Video downloaded to {}").format(video_path))
     except Exception as e:
-        click.echo(f"下載影片失敗：{e}")
+        click.echo(_("Failed to download video: {}").format(e))
         return
 
-    click.echo("轉錄音訊為文字中...")
+    click.echo(_("Transcribing audio to text..."))
     try:
         transcript = transcriber.transcribe(video_path)
         transcript_path = os.path.join(output, "transcript.srt")
         FileManager.save(transcript, transcript_path)
-        click.echo(f"轉錄文字已儲存至 {transcript_path}")
+        click.echo(_("Transcript saved to {}").format(transcript_path))
     except Exception as e:
-        click.echo(f"轉錄失敗：{e}")
+        click.echo(_("Failed to transcribe: {}").format(e))
         return
 
-    click.echo("生成摘要中...")
+    click.echo(_("Generating summary..."))
     try:
         summarizer = TextSummarizer(llm=ollama)
         summary = summarizer.summarize(transcript)
         summary_path = os.path.join(output, "summary.txt")
         FileManager.save(summary, summary_path)
-        click.echo(f"摘要已儲存至 {summary_path}")
+        click.echo(_("Summary saved to {}").format(summary_path))
     except Exception as e:
-        click.echo(f"生成摘要失敗：{e}")
+        click.echo(_("Failed to generate summary: {}").format(e))
         return
 
-    click.echo("摘要翻譯中...")
+    click.echo(_("Translating summary..."))
     try:
         translator = TextTranslator(target_language=language, llm=ollama)
         translate_summary = translator.translate(summary)
         translate_path = os.path.join(output, "translate.txt")
         FileManager.save(translate_summary, translate_path)
-        click.echo(f"摘要翻譯已儲存至 {translate_path}")
+        click.echo(_("Translated summary saved to {}").format(translate_path))
     except Exception as e:
-        click.echo(f"摘要翻譯失敗：{e}")
+        click.echo(_("Failed to translate summary: {}").format(e))
         return
 
-    click.echo("完成！")
+    click.echo(_("Done!"))
