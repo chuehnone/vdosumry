@@ -17,7 +17,7 @@ class FileManager:
             try:
                 if file.is_file():
                     file.unlink()
-                elif file.is_dir():
+                else:
                     shutil.rmtree(file)
             except OSError as e:
                 print(f"Error deleting {file}: {e}")
