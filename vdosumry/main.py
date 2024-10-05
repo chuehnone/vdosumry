@@ -1,8 +1,6 @@
 import os
-import shutil
 
 import click
-from pathlib import Path
 from vdosumry import (
     VideoDownloader,
     AudioTranscriber,
@@ -22,17 +20,11 @@ from .llm.ollama import Ollama
 def summarize_video(url, output, model_size, ollama_model, language):
     """下載影片，轉錄音訊，並生成摘要。"""
     # Create output directory if not exists or clear the directory if exists
-    if Path(output).exists():
-        for file in Path(output).glob("*"):
-            if file.is_file():
-                file.unlink()
-            elif file.is_dir():
-                shutil.rmtree(file)
+    FileManager.create_directory(output)
 
     downloader = VideoDownloader(output_path=output)
     transcriber = AudioTranscriber(model_size=model_size)
     ollama = Ollama(model=ollama_model)
-    file_manager = FileManager()
 
     click.echo("下載影片中...")
     try:
@@ -46,7 +38,7 @@ def summarize_video(url, output, model_size, ollama_model, language):
     try:
         transcript = transcriber.transcribe(video_path)
         transcript_path = os.path.join(output, "transcript.srt")
-        file_manager.save(transcript, transcript_path)
+        FileManager.save(transcript, transcript_path)
         click.echo(f"轉錄文字已儲存至 {transcript_path}")
     except Exception as e:
         click.echo(f"轉錄失敗：{e}")
@@ -57,7 +49,7 @@ def summarize_video(url, output, model_size, ollama_model, language):
         summarizer = TextSummarizer(llm=ollama)
         summary = summarizer.summarize(transcript)
         summary_path = os.path.join(output, "summary.txt")
-        file_manager.save(summary, summary_path)
+        FileManager.save(summary, summary_path)
         click.echo(f"摘要已儲存至 {summary_path}")
     except Exception as e:
         click.echo(f"生成摘要失敗：{e}")
@@ -68,7 +60,7 @@ def summarize_video(url, output, model_size, ollama_model, language):
         translator = TextTranslator(target_language=language, llm=ollama)
         translate_summary = translator.translate(summary)
         translate_path = os.path.join(output, "translate.txt")
-        file_manager.save(translate_summary, translate_path)
+        FileManager.save(translate_summary, translate_path)
         click.echo(f"摘要翻譯已儲存至 {translate_path}")
     except Exception as e:
         click.echo(f"摘要翻譯失敗：{e}")
