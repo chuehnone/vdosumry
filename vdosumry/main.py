@@ -1,4 +1,6 @@
 import os
+import shutil
+
 import click
 from pathlib import Path
 from vdosumry import (
@@ -19,8 +21,13 @@ from .llm.ollama import Ollama
 @click.option("--language", default="zh-TW", help="指定輸出的摘要語言")
 def summarize_video(url, output, model_size, ollama_model, language):
     """下載影片，轉錄音訊，並生成摘要。"""
-    # 創建輸出目錄
-    Path(output).mkdir(parents=True, exist_ok=True)
+    # Create output directory if not exists or clear the directory if exists
+    if Path(output).exists():
+        for file in Path(output).glob("*"):
+            if file.is_file():
+                file.unlink()
+            elif file.is_dir():
+                shutil.rmtree(file)
 
     downloader = VideoDownloader(output_path=output)
     transcriber = AudioTranscriber(model_size=model_size)
