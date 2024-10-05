@@ -9,7 +9,7 @@ class AudioTranscriber:
         model = whisper.load_model(self.model_size)
         response = model.transcribe(video_path)
         result = "\n".join(
-            f"{i['id']}\n"
+            f"{i['id'] + 1}\n"
             f"{int(i['start'] // 3600):02}:{int((i['start'] % 3600) // 60):02}:{int(i['start'] % 60):02},"
             f"{int((i['start'] % 1) * 1000):03}"
             "--> "
