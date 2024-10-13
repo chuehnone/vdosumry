@@ -6,7 +6,17 @@ class TextSummarizer:
         self.llm = llm
 
     def summarize(self, text: str) -> str:
-        prompt = f"請將以下逐字稿內容整理成摘要：\n\n{text}"
+        prompt = f"""
+# 整理逐字稿內容
+
+## 需求
+- 將內容拆分成多個段落
+  - 每個段落有代表主題
+  - 每個段落會有多個問題與答案
+
+## 逐字稿內容
+{text}
+"""
         try:
             return self.llm.generate(prompt)
         except Exception as e:
