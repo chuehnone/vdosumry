@@ -29,6 +29,12 @@ msgstr ""
 msgid "Summarization language"
 msgstr ""
 
+msgid "Creating output directory or cleaning existing directory..."
+msgstr ""
+
+msgid "Local path detected, skipping download"
+msgstr ""
+
 msgid "Downloading video..."
 msgstr ""
 

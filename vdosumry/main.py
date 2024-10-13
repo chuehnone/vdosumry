@@ -32,19 +32,24 @@ _ = translation.gettext
 @click.option("--language", default="zh-TW", help=_("Summarization language"))
 def summarize_video(url, output, model_size, ollama_model, language):
     """Download video, transcribe audio, and generate summary."""
-    FileManager.create_directory(output)
-
     downloader = VideoDownloader(output_path=output)
     transcriber = AudioTranscriber(model_size=model_size)
     ollama = Ollama(model=ollama_model)
 
-    click.echo(_("Downloading video..."))
-    try:
-        video_path = downloader.download(url)
-        click.echo(_("Video downloaded to {}").format(video_path))
-    except Exception as e:
-        click.echo(_("Failed to download video: {}").format(e))
-        return
+    click.echo(_("Creating output directory or cleaning existing directory..."))
+    FileManager.create_directory(output)
+
+    if os.path.exists(url):
+        click.echo(_("Local path detected, skipping download"))
+        video_path = url
+    else:
+        click.echo(_("Downloading video..."))
+        try:
+            video_path = downloader.download(url)
+            click.echo(_("Video downloaded to {}").format(video_path))
+        except Exception as e:
+            click.echo(_("Failed to download video: {}").format(e))
+            return
 
     click.echo(_("Transcribing audio to text..."))
     try:

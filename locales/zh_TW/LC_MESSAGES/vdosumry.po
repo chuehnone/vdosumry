@@ -29,6 +29,12 @@ msgstr "用於摘要的 Ollama 模型"
 msgid "Summarization language"
 msgstr "摘要語言"
 
+msgid "Creating output directory or cleaning existing directory..."
+msgstr "正在建立輸出目錄或清理現有目錄..."
+
+msgid "Local path detected, skipping download"
+msgstr "偵測到本機路徑，跳過下載"
+
 msgid "Downloading video..."
 msgstr "正在下載影片..."
 
