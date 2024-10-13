@@ -7,12 +7,12 @@ class FileManager:
     def create_directory(directory: str):
         path = Path(directory)
         if path.exists():
-            FileManager._clear_directory(path)
+            FileManager.__clear_directory(path)
         else:
             path.mkdir(parents=True, exist_ok=True)
 
     @staticmethod
-    def _clear_directory(path: Path):
+    def __clear_directory(path: Path):
         for file in path.glob("*"):
             try:
                 if file.is_file():

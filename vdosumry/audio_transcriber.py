@@ -13,7 +13,7 @@ class AudioTranscriber:
     def get_srt_format(self) -> str:
         return "\n".join(
             f"{i['id'] + 1}\n"
-            f"{self._format_time(i['start'])} --> {self._format_time(i['end'])}\n"
+            f"{self.__format_time(i['start'])} --> {self.__format_time(i['end'])}\n"
             f"{i['text'].strip()}\n"
             for i in self.segments
         )
@@ -22,7 +22,7 @@ class AudioTranscriber:
         return "\n".join(i["text"].strip() for i in self.segments)
 
     @staticmethod
-    def _format_time(seconds: float) -> str:
+    def __format_time(seconds: float) -> str:
         hours, remainder = divmod(seconds, 3600)
         minutes, seconds = divmod(remainder, 60)
         millis = int((seconds % 1) * 1000)

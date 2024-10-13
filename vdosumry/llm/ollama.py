@@ -27,12 +27,12 @@ class Ollama(LlmBase):
         try:
             response = requests.post(self.uri, headers=headers, json=data)
             response.raise_for_status()
-            return self._parse_response(response.text)
+            return self.__parse_response(response.text)
         except requests.exceptions.RequestException as e:
             raise RuntimeError(f"Request failed: {e}")
 
     @staticmethod
-    def _parse_response(response_text: str) -> str:
+    def __parse_response(response_text: str) -> str:
         try:
             data = "".join(
                 json.loads(line)["response"]
