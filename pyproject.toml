@@ -6,13 +6,13 @@ authors = ["ChinSheng <1897025+chuehnone@users.noreply.github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 yt-dlp = "^2024.8.6"
 ollama = "^0.3.3"
 click = "^8.1.7"
 llvmlite = "^0.43.0"
 numba = "^0.60.0"
-openai-whisper = {git = "https://github.com/openai/whisper.git"}
+whisper = {git = "https://github.com/chuehnone/whisper.git", branch = "main"}
 
 [tool.poetry.scripts]
 vdosumry = "vdosumry.main:summarize_video"

@@ -9,7 +9,7 @@
 - [ollama](https://ollama.com/): Please install ollama before installing Vdosumry
 
 ## Installation
-Ensure your Python version is 3.12 or above, then install the dependencies using the following command:
+Ensure your Python version is 3.11 or above, then install the dependencies using the following command:
 
 ```bash
 poetry install
