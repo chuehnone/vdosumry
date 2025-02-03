@@ -12,7 +12,12 @@
 ## Prerequisites
 
 - [ollama](https://ollama.com/): Please install ollama before installing Vdosumry
+- [ffmpeg](https://ffmpeg.org/): Please install ffmpeg before installing Vdosumry
+  - macOS: `brew install ffmpeg`
+- [llvm@14](https://releases.llvm.org/): Please install llvm before installing Vdosumry
+  - macOS: `brew install llvm@14`
 - [poetry](https://python-poetry.org/): Please install poetry before installing Vdosumry
+  - macOS: `brew install poetry`
 
 ## Installation
 Ensure your Python version is 3.11 or above, then install the dependencies using the following command:
