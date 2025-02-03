@@ -12,7 +12,12 @@
 ## 前期準備
 
 - [ollama](https://ollama.com/): 需要在本地端安裝 ollama 才能使用 Vdosumry
+- [ffmpeg](https://ffmpeg.org/): 需要在本地端安裝 ffmpeg 才能安裝 Vdosumry
+  - macOS: `brew install ffmpeg`
+- [llvm@14](https://releases.llvm.org/): 需要在本地端安裝 llvm@14 才能安裝 Vdosumry
+  - macOS: `brew install llvm@14`
 - [poetry](https://python-poetry.org/): 需要在本地端安裝 poetry 才能安裝 Vdosumry
+  - macOS: `brew install poetry`
 
 ## 安裝
 確認您的本地端 python 版本是 3.11 或更新的版本。
