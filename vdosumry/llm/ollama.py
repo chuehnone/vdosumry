@@ -4,9 +4,12 @@ from .base import LlmBase
 
 
 class Ollama(LlmBase):
-    def __init__(self, model: str, uri: str = "http://localhost:11434/api/generate"):
-        self.model = model
+    def __init__(self, uri: str = "http://localhost:11434"):
+        self.model = None
         self.uri = uri
+
+    def set_default_model(self, model: str) -> None:
+        self.model = model
 
     def generate(self, prompt: str) -> str:
         """
@@ -24,15 +27,33 @@ class Ollama(LlmBase):
             "model": self.model,
             "prompt": prompt,
         }
+
+        generate_uri = self.uri + "/api/generate"
         try:
-            response = requests.post(self.uri, headers=headers, json=data)
+            response = requests.post(generate_uri, headers=headers, json=data)
             response.raise_for_status()
-            return self.__parse_response(response.text)
+            return self.__parse_generate_json_lines_response(response.text)
+        except requests.exceptions.RequestException as e:
+            raise RuntimeError(f"Request failed: {e}")
+
+    def list(self) -> list[str]:
+        """
+        List available models.
+        :return:
+        :exception RuntimeError:
+        :exception ValueError:
+        """
+
+        list_uri = self.uri + "/api/tags"
+        try:
+            response = requests.get(list_uri)
+            response.raise_for_status()
+            return [model["model"] for model in json.loads(response.text)["models"]]
         except requests.exceptions.RequestException as e:
             raise RuntimeError(f"Request failed: {e}")
 
     @staticmethod
-    def __parse_response(response_text: str) -> str:
+    def __parse_generate_json_lines_response(response_text: str) -> str:
         try:
             data = "".join(
                 json.loads(line)["response"]

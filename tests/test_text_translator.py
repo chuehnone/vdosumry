@@ -13,7 +13,8 @@ class TestTextTranslator(unittest.TestCase):
         mock_response.text = '{"response": "這是一個測試翻譯"}\n'
         mock_post.return_value = mock_response
 
-        ollama = Ollama(model="llama3.2")
+        ollama = Ollama()
+        ollama.set_default_model("llama3.2")
         translator = TextTranslator(target_language="zh-TW", llm=ollama)
         text_to_translate = "This is a test translation."
 

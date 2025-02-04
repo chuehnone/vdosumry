@@ -1,6 +1,8 @@
 import os
 import gettext
 import click
+from torch.distributed.tensor import empty
+
 from vdosumry import (
     VideoDownloader,
     AudioTranscriber,
@@ -26,7 +28,7 @@ _ = translation.gettext
 @click.option("--model-size", default="base", help=_("Size of the Whisper model"))
 @click.option(
     "--ollama-model",
-    default="llama3.2",
+    default=None,
     help=_("Ollama model to use for summarization"),
 )
 @click.option("--language", default="zh-TW", help=_("Summarization language"))
@@ -34,7 +36,15 @@ def summarize_video(url, output, model_size, ollama_model, language):
     """Download video, transcribe audio, and generate summary."""
     downloader = VideoDownloader(output_path=output)
     transcriber = AudioTranscriber(model_size=model_size)
-    ollama = Ollama(model=ollama_model)
+    ollama = Ollama()
+    if ollama_model is None:
+        models = ollama.list()
+        if not models:
+            click.echo(_("Failed to loca ollama default model"))
+            return
+        select_model = models[0]
+        click.echo(_("Using default model: {}").format(select_model))
+        ollama.set_default_model(select_model)
 
     click.echo(_("Creating output directory or cleaning existing directory..."))
     FileManager.create_directory(output)

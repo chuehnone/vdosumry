@@ -44,7 +44,7 @@ poetry run vdosumry "https://www.youtube.com/watch?v={youtube_youtube_id}"
 
 - **--output** : 檔案輸出的資料夾位置 (預設: `./output`)
 - **--model-size** : Whisper 模型 (預設: `base`)
-- **--ollama-model** : Ollama 模型 (預設: `llama3.2`)
+- **--ollama-model** : Ollama 模型 (預設: 選擇 Ollama 本地端第一個可用的模型)
 - **--language** : 摘要的語言 (預設: `zh-TW`)
 
 ```bash
